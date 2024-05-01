@@ -10,6 +10,71 @@ module.exports = {
             res.render('moviesList', {movies: error})
         })       
     },
+
+    detail: async function(req,res) {
+        try {
+            let pelicula = await peliculaService.getBy(req.params.id); 
+            res.render('moviesDetail', {movie: pelicula});  
+        } catch (error) {
+            res.send("Ha ocurrido un error inesperado").status(500);
+        }
+    },
+
+    recomended: async function(req,res){
+        try {
+            let pelicula = await peliculaService.getAll();
+            res.render('recommendedMovies', {movies : pelicula})
+        } catch (error) {
+            res.send("Ha ocurrido un error inesperado").status(500);
+        }
+    },
+
+    new: async function(req,res){
+        try {
+            let pelicula = await peliculaService.getAll({ 
+                attributes: ['title', 'release_date'],
+                order: [['release_date', 'DESC']],
+                limit: 5 
+                 
+            });
+            res.render('newestMovies', {movies: pelicula})
+        } catch (error) {
+            res.send("Ha ocurrido un error inesperado").status(500);
+        }
+    },
+
+    create: async function(req,res){
+        try {
+            res.render('createMovie')
+        } catch (error) {
+            res.send("Ha ocurrido un error inesperado").status(500);
+        }
+    },
+
+    store: async function(req,res){
+        try {
+            let pelicula= await peliculaService.save(req.body)// Espera hasta que save(req.body) resuelva, es decir guarde la pelicula
+            //let peliculas = await peliculaService.getAll(); // Espera hasta que getAll() obtenga todas las peliculas
+            res.redirect(`/movies/`);
+            //res.render('moviesList', {movies: peliculas})// renderiza
+        } catch (error) {
+            res.send("Ha ocurrido un error inesperado al guardar la pelicula").status(500);
+        }
+    },
+
+   /* store: function(req, res) {
+        peliculaService.save(req.body) // Intenta guardar la película
+        .then(() => {
+            return peliculaService.getAll(); // Obtiene todas las películas si el guardado fue exitoso
+        })
+        .then(peliculas => {
+            res.render('moviesList', {movies: peliculas}); // Renderiza la lista de películas
+        })
+        .catch(error => {
+            res.send("Ha ocurrido un error inesperado").status(500); 
+        });
+    },*/
+
     edit: async function(req, res) {
         try {
             let pelicula = await peliculaService.getBy(req.params.id); 
@@ -23,7 +88,7 @@ module.exports = {
             let pelicula = await peliculaService.getBy(req.params.id); 
             res.render('moviesDetail', {movie: pelicula});  
         } catch (error) {
-            res.send("Ha ocurrido un error inesperado").status(500);
+            res.send("Ha ocurrido un error inesperado al recuperar la pelicula ").status(500);
         }     
     },
     update: async function(req, res) {

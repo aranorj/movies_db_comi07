@@ -10,12 +10,13 @@
     <figure>
         <img src="/img/logo-DH.png" alt="Logo Digital House">
     </figure>
-    <h1>PELIÍCULAS ORDENADASR FECHA</h1>
+    <h1>PELIÍCULAS ORDENADAS FECHA</h1>
     <ul>
         <% for( let i = 0; i < movies.length; i++ ) { %>
         <li>
             <a href="/movies/detail/<%=movies[i].id%>"><%= movies[i].title %> </a> <br>
-            <%= 'RELEASE DATE: ' + movies[i].release_date %> 
+                <!--<%= 'TITLE: ' + movies[i].title %>-->
+                <%= 'RELEASE DATE: ' + movies[i].release_date %> 
         </li>
         <% } %>
         

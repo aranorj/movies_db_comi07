@@ -29,6 +29,22 @@ module.exports = {
             }
         } 
     },
+
+    save: async function(nuevaPelicula){
+        let pelicula = new Pelicula(nuevaPelicula);
+        let peliculaCreada= await db.Peliculas.create(pelicula)
+        return peliculaCreada.dataValues
+
+        /*try {
+            let pelicula = new Pelicula(nuevaPelicula);
+            let peliculaCreada= await db.Peliculas.create(pelicula)
+            return peliculaCreada.dataValues
+            //console.log(peliculaCreada.dataValues);
+        } catch (error) {
+            console.log(error);
+        }*/
+    },
+
     updateBy: async function (body, id){
         try {
             let pelicula = new Pelicula(body);
