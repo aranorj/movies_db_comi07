@@ -3,7 +3,7 @@ let db = require('../db/models');
 module.exports = {
     getAll: function() {
         return new Promise((resolve, reject) => {
-            db.Peliculas.findAll()
+            db.Peliculas.findAll({include: [{association: 'actores'}]})
             .then(peliculas => {
                 //hacer cosas con mis peliculas 
                 resolve(peliculas)
@@ -16,7 +16,9 @@ module.exports = {
     },
     getBy: async function(id) {
         try {
-            return await db.Peliculas.findByPk(id);
+            return await db.Peliculas.findByPk(id, {
+                include: [{association: 'actoresConPeliculaComoFavorita'}]
+            });
         } catch (error) {
             console.log(error);
             return {
@@ -34,17 +36,7 @@ module.exports = {
         let pelicula = new Pelicula(nuevaPelicula);
         let peliculaCreada= await db.Peliculas.create(pelicula)
         return peliculaCreada.dataValues
-
-        /*try {
-            let pelicula = new Pelicula(nuevaPelicula);
-            let peliculaCreada= await db.Peliculas.create(pelicula)
-            return peliculaCreada.dataValues
-            //console.log(peliculaCreada.dataValues);
-        } catch (error) {
-            console.log(error);
-        }*/
     },
-
     updateBy: async function (body, id){
         try {
             let pelicula = new Pelicula(body);

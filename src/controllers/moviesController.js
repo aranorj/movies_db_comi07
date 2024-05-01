@@ -4,22 +4,15 @@ module.exports = {
     list: function(req, res) { 
         peliculaService.getAll()
         .then((peliculas)=>{
-            res.render('moviesList', {movies: peliculas})
+            //res.render('moviesList', {movies: peliculas})
+            res.send({movies: peliculas})
         })
         .catch((error)=>{
             res.render('moviesList', {movies: error})
         })       
     },
 
-    detail: async function(req,res) {
-        try {
-            let pelicula = await peliculaService.getBy(req.params.id); 
-            res.render('moviesDetail', {movie: pelicula});  
-        } catch (error) {
-            res.send("Ha ocurrido un error inesperado").status(500);
-        }
-    },
-
+   
     recomended: async function(req,res){
         try {
             let pelicula = await peliculaService.getAll();
@@ -61,20 +54,6 @@ module.exports = {
             res.send("Ha ocurrido un error inesperado al guardar la pelicula").status(500);
         }
     },
-
-   /* store: function(req, res) {
-        peliculaService.save(req.body) // Intenta guardar la película
-        .then(() => {
-            return peliculaService.getAll(); // Obtiene todas las películas si el guardado fue exitoso
-        })
-        .then(peliculas => {
-            res.render('moviesList', {movies: peliculas}); // Renderiza la lista de películas
-        })
-        .catch(error => {
-            res.send("Ha ocurrido un error inesperado").status(500); 
-        });
-    },*/
-
     edit: async function(req, res) {
         try {
             let pelicula = await peliculaService.getBy(req.params.id); 
@@ -86,7 +65,8 @@ module.exports = {
     getOne: async function(req, res) {
         try {
             let pelicula = await peliculaService.getBy(req.params.id); 
-            res.render('moviesDetail', {movie: pelicula});  
+            //res.render('moviesDetail', {movie: pelicula}); 
+            res.send({movie: pelicula});  
         } catch (error) {
             res.send("Ha ocurrido un error inesperado al recuperar la pelicula ").status(500);
         }     

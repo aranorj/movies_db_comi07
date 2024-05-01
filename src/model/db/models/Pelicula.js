@@ -32,5 +32,19 @@ module.exports = (sequelize, DataTypes)=>{
         timestamps: false
     }
 
-    return sequelize.define(alias, cols, config);
+    let Pelicula = sequelize.define(alias, cols, config);
+    
+    Pelicula.associate = (models) => {
+        Pelicula.hasMany(models.Actores, {as: "actoresConPeliculaComoFavorita", foreignKey: "favorite_movie_id"})
+        Pelicula.belongsToMany(models.Actores, {
+            as: 'actores',
+            through: 'actor_movie',
+            timestamps: false, 
+            foreignKey: 'movie_id',
+            otherKey: 'actor_id'
+        })
+    }
+
+    return Pelicula;
+
 }
